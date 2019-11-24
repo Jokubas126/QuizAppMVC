@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">QuizAppMVC</string>
+    <string name="question_1">Albania was part of Yugoslavia</string><!-- false -->
+    <string name="question_2">Belarus is in Africa</string><!-- false -->
+    <string name="question_3">The letter e is the most common letter in the English language</string>  <!-- true -->
+    <string name="question_4">There exist three directions such that, by moving in those three directions,
+        it is possible to go anywhere on a two-dimensional surface.</string> <!-- true -->
+    <string name="question_5">The North Pole is the only place on Earth from which it is possible to walk
+        50 miles south, 50 miles east, and 50 miles north, and end up back where you started.</string> <!-- false -->
+    <string name="question_6">There is actually a painting called "Red Square", consisting of a plain red square.</string> <!-- true -->
+
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+
+    <string name="correct_answer">Correct answer</string>
+    <string name="wrong_answer">Wrong answer</string>
 </resources>
