@@ -11,6 +11,8 @@
 
     <string name="true_button">True</string>
     <string name="false_button">False</string>
+    <string name="show_answer_button">Show the answer</string>
+    <string name="try_again_button">Try again</string>
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>

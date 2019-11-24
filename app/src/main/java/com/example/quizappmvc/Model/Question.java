@@ -9,19 +9,11 @@ public class Question {
         this.answer = answer;
     }
 
-    public boolean getAnswer() {
+    public boolean isAnswer() {
         return answer;
     }
 
     public int getAnswerResourceId() {
         return answerResourceId;
-    }
-
-    public void setAnswerResourceId(int answerResourceId) {
-        this.answerResourceId = answerResourceId;
-    }
-
-    public void setAnswer(boolean answer) {
-        this.answer = answer;
     }
 }

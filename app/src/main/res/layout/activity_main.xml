@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,6 +7,21 @@
     android:background="@color/colorPrimaryDark"
     android:gravity="center"
     tools:context=".Controller.MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top">
+
+        <TextView
+            android:id="@+id/score_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/6"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
 
     <ImageView
         android:src="@drawable/ic_launcher_foreground"
@@ -45,10 +59,25 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/show_answer_button"
+        android:contentDescription="@string/show_answer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_answer_button"/>
+
+    <Button
         android:id="@+id/next_button"
         android:contentDescription="@string/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next_button"/>
+
+    <Button
+        android:id="@+id/try_again_button"
+        android:contentDescription="@string/try_again_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/try_again_button"
+        android:visibility="visible"/>
 
 </LinearLayout>
