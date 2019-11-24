@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button falseButton;
     private Button trueButton;
+    private Button nextButton;
     private TextView answerTextView;
 
     private Question[] question = new Question[]{
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new Question(R.string.question_5, false),
             new Question(R.string.question_6, true)
     };
+    private int currentQuestion = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         falseButton = findViewById(R.id.false_button);
         trueButton = findViewById(R.id.true_button);
+        nextButton = findViewById(R.id.next_button);
         answerTextView = findViewById(R.id.answer_text_view);
 
 
@@ -40,19 +43,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //registering button to listen for a click
         falseButton.setOnClickListener(this);
         trueButton.setOnClickListener(this);
-
+        nextButton.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
+
             case R.id.false_button:
+                // when answer is wrong
                 Toast.makeText(MainActivity.this, "False", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.true_button:
+                //when answer is correct
                 Toast.makeText(MainActivity.this, "True", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.next_button:
+                //go to the next question
+                Toast.makeText(MainActivity.this, "Next", Toast.LENGTH_SHORT).show();
+                currentQuestion++;
+                //question[currentQuestion].setAnswerResourceId(currentQuestion);
+                answerTextView.setText(question[currentQuestion].getAnswerResourceId());
                 break;
         }
     }
