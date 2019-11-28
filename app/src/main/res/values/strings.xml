@@ -16,5 +16,5 @@
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
-    <string name="next_button">Next Question</string>
+    <string name="next_button">Skip Question</string>
 </resources>

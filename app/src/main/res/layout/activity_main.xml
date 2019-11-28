@@ -48,29 +48,25 @@
             android:contentDescription="@string/correct_answer"
             android:text="@string/true_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"/>
         <Button
             android:id="@+id/false_button"
             android:contentDescription="@string/false_button"
             android:text="@string/false_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"/>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/show_answer_button"
-        android:contentDescription="@string/show_answer_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_answer_button"/>
 
     <Button
         android:id="@+id/next_button"
         android:contentDescription="@string/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next_button"/>
+        android:text="@string/next_button"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/try_again_button"
@@ -78,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/try_again_button"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>

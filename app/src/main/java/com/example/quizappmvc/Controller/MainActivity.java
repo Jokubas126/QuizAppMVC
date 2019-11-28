@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button falseButton;
     private Button trueButton;
     private Button nextButton;
-    private Button showAnswerButton;
     private Button tryAgainButton;
     private TextView answerTextView;
     private TextView allAnswerScore;
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
     private int currentQuestion = 0;
     private int score = 0;
+    private String scoreText = "0/" + question.length;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         falseButton = findViewById(R.id.false_button);
         trueButton = findViewById(R.id.true_button);
         nextButton = findViewById(R.id.next_button);
-        showAnswerButton = findViewById(R.id.show_answer_button);
         tryAgainButton = findViewById(R.id.try_again_button);
         answerTextView = findViewById(R.id.answer_text_view);
         allAnswerScore = findViewById(R.id.score_text_view);
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         falseButton.setOnClickListener(this);
         trueButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
-        showAnswerButton.setOnClickListener(this);
         tryAgainButton.setOnClickListener(this);
 
         String scoreText = score + "/" + question.length;
@@ -77,12 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 nextQuestion();
                 break;
 
-            case R.id.show_answer_button:
-                Toast.makeText(MainActivity.this, "Show the answer", Toast.LENGTH_SHORT).show();
-                break;
-
             case R.id.try_again_button:
                 Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
+                restartQuiz();
                 break;
         }
     }
@@ -96,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         }
-        //currentQuestion = (currentQuestion + 1) % question.length; // to loop through the questions
+        //currentQuestion = (currentQuestion + 1) % question.length; // for looping through the questions over and over
 
     }
 
@@ -105,10 +100,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (correctAnswer == choice){
             Toast.makeText(MainActivity.this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             score++;
-            String scoreText = score + "/" + question.length;
+            scoreText = score + "/" + question.length;
             allAnswerScore.setText(scoreText);
+            nextQuestion();
         } else {
             Toast.makeText(MainActivity.this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
+            nextQuestion();
         }
+    }
+
+    void restartQuiz(){
+        score = 0;
+        scoreText = score + "/" + question.length;
+        allAnswerScore.setText(scoreText);
+        currentQuestion = 0;
+        answerTextView.setText(question[currentQuestion].getAnswerResourceId());
     }
 }
