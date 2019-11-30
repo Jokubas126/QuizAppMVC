@@ -13,13 +13,17 @@ import com.example.quizappmvc.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // buttons in the app
     private Button falseButton;
     private Button trueButton;
     private Button nextButton;
     private Button tryAgainButton;
+
+    //text views used
     private TextView answerTextView;
     private TextView allAnswerScore;
 
+    //questions with their correct answers
     private Question[] question = new Question[]{
             new Question(R.string.question_1, false),
             new Question(R.string.question_2, false),
@@ -28,9 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new Question(R.string.question_5, false),
             new Question(R.string.question_6, true)
     };
-    private int currentQuestion = 0;
-    private int score = 0;
-    private String scoreText = "0/" + question.length;
+
+    private int currentQuestion = 0; //question counter
+    private int score = 0; //score of the player
+    private String scoreText = "0/" + question.length; //initial score text
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nextButton.setOnClickListener(this);
         tryAgainButton.setOnClickListener(this);
 
-        String scoreText = score + "/" + question.length;
+        scoreText = score + "/" + question.length;
         allAnswerScore.setText(scoreText);
     }
 
@@ -61,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.false_button:
                 // when answer is wrong
                 Toast.makeText(MainActivity.this, "False", Toast.LENGTH_SHORT).show();
-                checkAnswer(false);
+                checkAnswer(false); //check an answer with the given
                 break;
 
             case R.id.true_button:
                 //when answer is correct
                 Toast.makeText(MainActivity.this, "True", Toast.LENGTH_SHORT).show();
-                checkAnswer(true);
+                checkAnswer(true); //check an answer with the given
                 break;
 
             case R.id.next_button:
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.try_again_button:
                 Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
-                restartQuiz();
+                restartQuiz(); //restarts the results
                 break;
         }
     }
