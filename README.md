@@ -1,8 +1,10 @@
 # QuizAppMVC
-Quick and small quiz application to try out a simple MVC design pattern.
-
+Quiz application, which uses HTTP API database of true-false questions and is implemented using MVC design pattern.
+Questions retrieved from: https://raw.githubusercontent.com/curiousily/simple-quiz/master/script/statements-data.json
 # What I learned
-* MVC design pattern
-* Simple usage of toasts
+* Usage of MVC design pattern
+* Usage of the Volley Library
+* Parsing data through JsonArrayRequest
+* Usage of interfaces to wait for the processes to finish
 * Usage of switch statement for the buttons 
 * Basic principles of the LinearLayout
