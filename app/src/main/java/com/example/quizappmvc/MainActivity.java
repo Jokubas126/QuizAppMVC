@@ -9,8 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizappmvc.Model.Question;
-import com.example.quizappmvc.data.QuestionHolder;
-import com.example.quizappmvc.data.QuestionListAsyncResponse;
+import com.example.quizappmvc.Model.data.QuestionHolder;
+import com.example.quizappmvc.Model.data.QuestionListAsyncResponse;
 
 import java.util.ArrayList;
 

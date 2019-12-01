@@ -1,4 +1,4 @@
-package com.example.quizappmvc.data;
+package com.example.quizappmvc.Model.data;
 
 import android.util.Log;
 
