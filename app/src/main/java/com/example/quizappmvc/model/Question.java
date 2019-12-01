@@ -1,4 +1,4 @@
-package com.example.quizappmvc.Model;
+package com.example.quizappmvc.model;
 
 import androidx.annotation.NonNull;
 

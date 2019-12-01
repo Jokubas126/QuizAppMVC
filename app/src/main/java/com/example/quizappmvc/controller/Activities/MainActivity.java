@@ -1,4 +1,4 @@
-package com.example.quizappmvc;
+package com.example.quizappmvc.controller.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.quizappmvc.Model.Question;
-import com.example.quizappmvc.Model.data.QuestionHolder;
-import com.example.quizappmvc.Model.data.QuestionListAsyncResponse;
+import com.example.quizappmvc.model.Question;
+import com.example.quizappmvc.model.data.QuestionHolder;
+import com.example.quizappmvc.model.data.QuestionListAsyncResponse;
+import com.example.quizappmvc.R;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int score = 0; //score of the player
     private String scoreText = ""; //score text
 
-    private QuestionHolder questionHolder;
-    private Question question;
+    private QuestionHolder questionHolder; //all the questions from the database
+    private Question question; //current question
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

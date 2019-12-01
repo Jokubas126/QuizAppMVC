@@ -1,11 +1,11 @@
-package com.example.quizappmvc.Model.data;
+package com.example.quizappmvc.model.data;
 
 import android.util.Log;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.quizappmvc.controller.ApplicationController;
-import com.example.quizappmvc.Model.Question;
+import com.example.quizappmvc.model.Question;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,10 +60,6 @@ public class QuestionHolder {
 
     public Question getCurrentQuestion() {
         return questions.get(currentQuestion);
-    }
-
-    public boolean getCorrectAnswer() {
-        return questions.get(currentQuestion).getCorrectAnswer();
     }
 
     public int getQuestionListSize(){

@@ -1,6 +1,6 @@
-package com.example.quizappmvc.Model.data;
+package com.example.quizappmvc.model.data;
 
-import com.example.quizappmvc.Model.Question;
+import com.example.quizappmvc.model.Question;
 
 import java.util.ArrayList;
 
