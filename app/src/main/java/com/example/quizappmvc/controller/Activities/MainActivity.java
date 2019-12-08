@@ -3,6 +3,8 @@ package com.example.quizappmvc.controller.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -22,11 +24,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String MESSAGE_ID = "previous score";
+
     // buttons in the app
     private Button falseButton;
     private Button trueButton;
-    private Button nextButton;
-    private ImageButton tryAgainButton;
+    private Button skipButton;
+    private Button previousGameButton;
+    private Button saveButton;
+    private ImageButton restartButton;
 
     //text views used
     private TextView questionTextView;
@@ -56,16 +62,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         falseButton = findViewById(R.id.false_button);
         trueButton = findViewById(R.id.true_button);
-        nextButton = findViewById(R.id.next_button);
-        tryAgainButton = findViewById(R.id.try_again_button);
+        skipButton = findViewById(R.id.skip_button);
+        restartButton = findViewById(R.id.restart_button);
+        previousGameButton = findViewById(R.id.saved_games_button);
+        saveButton = findViewById(R.id.save_button);
         questionTextView = findViewById(R.id.question_text_view);
         allAnswerScore = findViewById(R.id.score_text_view);
 
         //registering button to listen for a click
         falseButton.setOnClickListener(MainActivity.this);
         trueButton.setOnClickListener(MainActivity.this);
-        nextButton.setOnClickListener(MainActivity.this);
-        tryAgainButton.setOnClickListener(MainActivity.this);
+        skipButton.setOnClickListener(MainActivity.this);
+        restartButton.setOnClickListener(MainActivity.this);
+        previousGameButton.setOnClickListener(MainActivity.this);
+        saveButton.setOnClickListener(MainActivity.this);
 
         scoreText = score + "/" + questionsTaken;
         allAnswerScore.setText(scoreText);
@@ -75,25 +85,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.false_button:
-                // when answer is wrong
-                Toast.makeText(MainActivity.this, "False", Toast.LENGTH_SHORT).show();
                 checkAnswer(false); //check an answer with the given
                 break;
 
             case R.id.true_button:
-                //when answer is correct
-                Toast.makeText(MainActivity.this, "True", Toast.LENGTH_SHORT).show();
                 checkAnswer(true); //check an answer with the given
                 break;
 
-            case R.id.next_button:
+            case R.id.skip_button:
                 //go to the next question
                 nextQuestion();
                 break;
 
-            case R.id.try_again_button:
-                Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
+            case R.id.restart_button:
+                Toast.makeText(MainActivity.this, "Game restarted", Toast.LENGTH_SHORT).show();
                 restartQuiz(); //restarts the results
+                break;
+
+            case R.id.saved_games_button:
+                loadPreviousGame();
+                break;
+
+            case R.id.save_button:
+                saveGame();
                 break;
         }
     }
@@ -103,23 +117,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (correctAnswer == choice){
             fadeAnimation();
             score++;
-            questionsTaken++;
             scoreText = score + "/" + questionsTaken;
             allAnswerScore.setText(scoreText);
             nextQuestion();
         } else {
             shakeAnimation();
-            questionsTaken++;
             nextQuestion();
         }
     }
 
     private void nextQuestion(){
+        currentQuestion++;
+        questionsTaken++;
         if (currentQuestion < questionHolder.getQuestionListSize()){
             question = questionHolder.getNextQuestion();
-            questionTextView.setText(question.getQuestionText());
-            scoreText = score + "/" + questionsTaken;
-            allAnswerScore.setText(scoreText);
+            updateInformation();
         } else{
             Toast.makeText(MainActivity.this, "This was the last question", Toast.LENGTH_SHORT).show();
         }
@@ -129,9 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void restartQuiz(){
         score = 0;
         questionsTaken = 0;
+        questionHolder.setCurrentQuestion(0);
+        updateInformation();
+    }
+
+    void updateInformation(){
         scoreText = score + "/" + questionsTaken;
         allAnswerScore.setText(scoreText);
-        questionHolder.setCurrentQuestion(0);
+        questionHolder.setCurrentQuestion(currentQuestion);
         question = questionHolder.getCurrentQuestion();
         questionTextView.setText(question.getQuestionText());
     }
@@ -175,5 +192,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override public void onAnimationRepeat(Animation animation) {}
         });
+    }
+
+    private void loadPreviousGame(){
+        SharedPreferences getSharedData = getSharedPreferences(MESSAGE_ID , MODE_PRIVATE);
+        score = getSharedData.getInt("score", 0);
+        questionsTaken = getSharedData.getInt("questions taken", 0);
+        currentQuestion = getSharedData.getInt("current question", 0);
+        updateInformation();
+        Toast.makeText(MainActivity.this, "Game loaded", Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveGame(){
+        SharedPreferences preferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putInt("score", score);
+        editor.putInt("current question", currentQuestion);
+        editor.putInt("questions taken", questionsTaken);
+        editor.apply();
+
+        Toast.makeText(MainActivity.this, "Game saved", Toast.LENGTH_SHORT).show();
     }
 }

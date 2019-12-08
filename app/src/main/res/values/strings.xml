@@ -1,13 +1,20 @@
 <resources>
+
     <string name="app_name">QuizAppMVC</string>
+
+    <!-- MAIN ACTIVITY -->
+
     <string name="title_text">Quiz</string>
 
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="show_answer_button">Show the answer</string>
     <string name="try_again_button">Try again</string>
+    <string name="saved_games_button">Previous game</string>
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
-    <string name="next_button">Skip Question</string>
+    <string name="skip_button">Skip Question</string>
+    <string name="save_button">Save game</string>
+
 </resources>
