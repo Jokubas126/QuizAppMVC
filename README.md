@@ -4,7 +4,8 @@ Questions retrieved from: https://raw.githubusercontent.com/curiousily/simple-qu
 # What I learned
 * Usage of MVC design pattern
 * Usage of the Volley Library
-* Parsing data through JsonArrayRequest
+* JSON syntax
 * Usage of interfaces to wait for the processes to finish
+* Usage of SharedPreferences to save data of the session
 * Usage of switch statement for the buttons 
-* Basic principles of the LinearLayout
+* Usage of the LinearLayout
