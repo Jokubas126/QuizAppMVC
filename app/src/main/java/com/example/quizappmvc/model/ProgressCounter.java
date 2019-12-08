@@ -20,6 +20,25 @@ public class ProgressCounter {
         this.highScoreQuestionsTaken = highScoreQuestionsTaken;
     }
 
+    public void checkForHighScore(){
+        if (getScore() > getHighScore()) {
+            setHighScore(getScore());
+            setHighScoreQuestionsTaken(getQuestionsTaken());
+        }
+    }
+
+    public void onCorrect() {
+        setScore(getScore() + 1);
+        setScoreText(getScore() + "/" + getQuestionsTaken());
+        checkForHighScore();
+    }
+
+    public void onRestart(){
+        setScore(0);
+        setQuestionsTaken(0);
+        setCurrentQuestion(0);
+    }
+
     public int getCurrentQuestion() {
         return currentQuestion;
     }

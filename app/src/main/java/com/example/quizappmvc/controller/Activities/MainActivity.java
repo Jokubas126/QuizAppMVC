@@ -3,7 +3,6 @@ package com.example.quizappmvc.controller.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -19,26 +18,21 @@ import com.example.quizappmvc.model.ProgressCounter;
 import com.example.quizappmvc.model.Question;
 import com.example.quizappmvc.model.data.*;
 import com.example.quizappmvc.R;
+import com.example.quizappmvc.model.preferences.LoadGame;
+import com.example.quizappmvc.model.preferences.SaveGame;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String MESSAGE_ID = "previous progressCounter";
-
-    // buttons in the app
-    private Button falseButton;
-    private Button trueButton;
-    private Button skipButton;
-    private Button saveButton;
-    private ImageButton restartButton;
 
     //text views used
     private TextView questionTextView;
     private TextView allAnswerScore;
     private TextView highScoreTextView;
 
-    private ProgressCounter progressCounter = new ProgressCounter();
+    private ProgressCounter progressCounter;
+    private SaveGame saveGameState;
+    private LoadGame loadGame;
 
     private QuestionHolder questionHolder; //all the questions from the database
     private Question question; //current question
@@ -49,18 +43,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         new StyleSetup(this, getSupportActionBar());
 
+        progressCounter = new ProgressCounter();
+        saveGameState = new SaveGame(this.getApplicationContext());
+        loadGame = new LoadGame(this.getApplicationContext());
+
         questionHolder = new QuestionHolder();
         questionHolder.getQuestions(new QuestionListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Question> questionArrayList) {
-                loadGame();
+                progressCounter = loadGame.loadGame(progressCounter);
+                updateInformation();
+                Toast.makeText(MainActivity.this, "Game loaded", Toast.LENGTH_SHORT).show();
             }
         });
-        falseButton = findViewById(R.id.false_button);
-        trueButton = findViewById(R.id.true_button);
-        skipButton = findViewById(R.id.skip_button);
-        restartButton = findViewById(R.id.restart_button);
-        saveButton = findViewById(R.id.save_button);
+
+        // buttons in the app
+        Button falseButton = findViewById(R.id.false_button);
+        Button trueButton = findViewById(R.id.true_button);
+        Button skipButton = findViewById(R.id.skip_button);
+        ImageButton restartButton = findViewById(R.id.restart_button);
+        Button saveButton = findViewById(R.id.save_button);
+
+        //text views found
         questionTextView = findViewById(R.id.question_text_view);
         allAnswerScore = findViewById(R.id.score_text_view);
         highScoreTextView = findViewById(R.id.high_score_text_view);
@@ -95,20 +99,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.save_button:
-                saveGame();
+                saveGameState.saveGame(progressCounter);
+                Toast.makeText(MainActivity.this, "Game saved", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     void checkAnswer(boolean choice){
-        boolean correctAnswer = question.getCorrectAnswer();
-        if (correctAnswer == choice){
+        if(question.getCorrectAnswer() == choice){
             fadeAnimation();
-            progressCounter.setScore(progressCounter.getScore() + 1);
-            progressCounter.setScoreText(progressCounter.getScore() + "/" + progressCounter.getQuestionsTaken());
+            progressCounter.onCorrect();
             allAnswerScore.setText(progressCounter.getScoreText());
             nextQuestion();
-            checkForHighScore();
         } else {
             shakeAnimation();
             nextQuestion();
@@ -128,11 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // needs to redo it later to change values using setters in QuestionHolder class
     void restartQuiz(){
-        progressCounter.setScore(0);
-        progressCounter.setQuestionsTaken(0);
-        progressCounter.setCurrentQuestion(0);
+        progressCounter.onRestart();
         updateInformation();
-        saveGame();
     }
 
     void updateInformation(){
@@ -141,17 +140,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         questionHolder.setCurrentQuestion(progressCounter.getCurrentQuestion());
         question = questionHolder.getCurrentQuestion();
         questionTextView.setText(question.getQuestionText());
-        checkForHighScore();
+        progressCounter.checkForHighScore();
         String textForHighScore = progressCounter.getHighScore() + "/" + progressCounter.getHighScoreQuestionsTaken();
         highScoreTextView.setText(textForHighScore);
     }
 
-    private void checkForHighScore(){
-        if (progressCounter.getScore() > progressCounter.getHighScore()){
-            progressCounter.setHighScore(progressCounter.getScore());
-            progressCounter.setHighScoreQuestionsTaken(progressCounter.getQuestionsTaken());
-        }
-
+    @Override
+    protected void onStop() {
+        saveGameState.saveGame(progressCounter);
+        super.onStop();
     }
 
     private void fadeAnimation(){
@@ -162,12 +159,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animation.setRepeatMode(Animation.REVERSE); // to repeat animation backwards
         questionTextView.setAnimation(animation);
         cardView.setAnimation(animation);
-
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override public void onAnimationStart(Animation animation) {
                 cardView.setCardBackgroundColor(getResources().getColor(R.color.cardRightAnswer));
             }
-
 
             @Override public void onAnimationEnd(Animation animation) {
                 cardView.setCardBackgroundColor(getResources().getColor(R.color.backgroundCardLayoutColor));
@@ -186,45 +181,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 cardView.setCardBackgroundColor(getResources().getColor(R.color.cardWrongAnswer));
             }
 
-
             @Override public void onAnimationEnd(Animation animation) {
                 cardView.setCardBackgroundColor(getResources().getColor(R.color.backgroundCardLayoutColor));
             }
 
             @Override public void onAnimationRepeat(Animation animation) {}
         });
-    }
-
-    private void loadGame(){
-        if (getSharedPreferences(MESSAGE_ID, MODE_PRIVATE) != null){
-            SharedPreferences getSharedData = getSharedPreferences(MESSAGE_ID , MODE_PRIVATE);
-            progressCounter.setScore(getSharedData.getInt("progressCounter", 0));
-            progressCounter.setQuestionsTaken(getSharedData.getInt("questions taken", 0));
-            progressCounter.setCurrentQuestion(getSharedData.getInt("current question", 0));
-            progressCounter.setHighScore(getSharedData.getInt("highScore", 0));
-            progressCounter.setHighScoreQuestionsTaken(getSharedData.getInt("questions on highScore", 0));
-            Toast.makeText(MainActivity.this, "Game loaded", Toast.LENGTH_SHORT).show();
-        }
-        updateInformation();
-    }
-
-    private void saveGame(){
-        SharedPreferences preferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putInt("progressCounter", progressCounter.getScore());
-        editor.putInt("current question", progressCounter.getCurrentQuestion());
-        editor.putInt("questions taken", progressCounter.getQuestionsTaken());
-        editor.putInt("highScore", progressCounter.getHighScore());
-        editor.putInt("questions on highScore", progressCounter.getHighScoreQuestionsTaken());
-        editor.apply();
-
-        Toast.makeText(MainActivity.this, "Game saved", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        saveGame();
     }
 }
