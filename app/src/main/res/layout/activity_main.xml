@@ -15,11 +15,22 @@
         android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/saved_games_button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/saved_games_button"/>
+            android:layout_marginStart="10dp"
+            android:text="@string/high_score"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/high_score_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0/0"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"/>
 
         <View
             android:layout_width="0dp"
@@ -40,7 +51,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="top"
         android:orientation="vertical">
 
         <TextView
@@ -49,7 +59,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/finger_paint"
-            android:padding="8dp"
             android:text="@string/title_text"
             android:textColor="@android:color/white"
             android:textSize="40sp" />
