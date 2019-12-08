@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="backgroundColor">#243C70</color>
     <color name="backgroundCardLayoutColor">#8196EC</color>
+    <color name="cardWrongAnswer">#C43B3B</color>
+    <color name="cardRightAnswer">#469449</color>
 </resources>

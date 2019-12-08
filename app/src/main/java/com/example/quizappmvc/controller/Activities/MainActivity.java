@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton tryAgainButton;
 
     //text views used
-    private TextView answerTextView;
+    private TextView questionTextView;
     private TextView allAnswerScore;
 
     private int currentQuestion = 0; //question counter
@@ -50,14 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void processFinished(ArrayList<Question> questionArrayList) {
                 question = questionHolder.getCurrentQuestion();
-                answerTextView.setText(question.getQuestionText());
+                questionTextView.setText(question.getQuestionText());
             }
         });
         falseButton = findViewById(R.id.false_button);
         trueButton = findViewById(R.id.true_button);
         nextButton = findViewById(R.id.next_button);
         tryAgainButton = findViewById(R.id.try_again_button);
-        answerTextView = findViewById(R.id.question_text_view);
+        questionTextView = findViewById(R.id.question_text_view);
         allAnswerScore = findViewById(R.id.score_text_view);
 
         //registering button to listen for a click
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void checkAnswer(boolean choice){
         boolean correctAnswer = question.getCorrectAnswer();
         if (correctAnswer == choice){
-            Toast.makeText(MainActivity.this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
+            fadeAnimation();
             score++;
             questionsTaken++;
             scoreText = score + "/" + questionsTaken;
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             nextQuestion();
         } else {
             shakeAnimation();
-            Toast.makeText(MainActivity.this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
             questionsTaken++;
             nextQuestion();
         }
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void nextQuestion(){
         if (currentQuestion < questionHolder.getQuestionListSize()){
             question = questionHolder.getNextQuestion();
-            answerTextView.setText(question.getQuestionText());
+            questionTextView.setText(question.getQuestionText());
             scoreText = score + "/" + questionsTaken;
             allAnswerScore.setText(scoreText);
         } else{
@@ -133,12 +133,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         allAnswerScore.setText(scoreText);
         questionHolder.setCurrentQuestion(0);
         question = questionHolder.getCurrentQuestion();
-        answerTextView.setText(question.getQuestionText());
+        questionTextView.setText(question.getQuestionText());
+    }
+
+    private void fadeAnimation(){
+        final CardView cardView = findViewById(R.id.card_view);
+        AlphaAnimation animation = new AlphaAnimation(1.0f, 0.3f);
+        animation.setDuration(250);
+        animation.setRepeatCount(1);
+        animation.setRepeatMode(Animation.REVERSE); // to repeat animation backwards
+        questionTextView.setAnimation(animation);
+        cardView.setAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override public void onAnimationStart(Animation animation) {
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.cardRightAnswer));
+            }
+
+
+            @Override public void onAnimationEnd(Animation animation) {
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.backgroundCardLayoutColor));
+            }
+
+            @Override public void onAnimationRepeat(Animation animation) {}
+        });
     }
 
     private void shakeAnimation(){
         Animation shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake_animation);
-        CardView cardView = findViewById(R.id.card_view);
+        final CardView cardView = findViewById(R.id.card_view);
         cardView.setAnimation(shake);
+        shake.setAnimationListener(new Animation.AnimationListener() {
+            @Override public void onAnimationStart(Animation animation) {
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.cardWrongAnswer));
+            }
+
+
+            @Override public void onAnimationEnd(Animation animation) {
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.backgroundCardLayoutColor));
+            }
+
+            @Override public void onAnimationRepeat(Animation animation) {}
+        });
     }
 }
