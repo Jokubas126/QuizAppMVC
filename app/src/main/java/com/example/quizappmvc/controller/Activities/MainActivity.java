@@ -1,16 +1,20 @@
 package com.example.quizappmvc.controller.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.quizappmvc.controller.StyleSetup;
 import com.example.quizappmvc.model.Question;
-import com.example.quizappmvc.model.data.QuestionHolder;
-import com.example.quizappmvc.model.data.QuestionListAsyncResponse;
+import com.example.quizappmvc.model.data.*;
 import com.example.quizappmvc.R;
 
 import java.util.ArrayList;
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button falseButton;
     private Button trueButton;
     private Button nextButton;
-    private Button tryAgainButton;
+    private ImageButton tryAgainButton;
 
     //text views used
     private TextView answerTextView;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int currentQuestion = 0; //question counter
     private int score = 0; //score of the player
+    private int questionsTaken = 0; // questions that were already asked
     private String scoreText = ""; //score text
 
     private QuestionHolder questionHolder; //all the questions from the database
@@ -38,30 +43,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new StyleSetup(this, getSupportActionBar());
+
         questionHolder = new QuestionHolder();
         questionHolder.getQuestions(new QuestionListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Question> questionArrayList) {
                 question = questionHolder.getCurrentQuestion();
-                falseButton = findViewById(R.id.false_button);
-                trueButton = findViewById(R.id.true_button);
-                nextButton = findViewById(R.id.next_button);
-                tryAgainButton = findViewById(R.id.try_again_button);
-                answerTextView = findViewById(R.id.answer_text_view);
-                allAnswerScore = findViewById(R.id.score_text_view);
-
-                //registering button to listen for a click
-                falseButton.setOnClickListener(MainActivity.this);
-                trueButton.setOnClickListener(MainActivity.this);
-                nextButton.setOnClickListener(MainActivity.this);
-                tryAgainButton.setOnClickListener(MainActivity.this);
-
-                scoreText = score + "/" + questionHolder.getQuestionListSize();
-                allAnswerScore.setText(scoreText);
-
                 answerTextView.setText(question.getQuestionText());
             }
         });
+        falseButton = findViewById(R.id.false_button);
+        trueButton = findViewById(R.id.true_button);
+        nextButton = findViewById(R.id.next_button);
+        tryAgainButton = findViewById(R.id.try_again_button);
+        answerTextView = findViewById(R.id.question_text_view);
+        allAnswerScore = findViewById(R.id.score_text_view);
+
+        //registering button to listen for a click
+        falseButton.setOnClickListener(MainActivity.this);
+        trueButton.setOnClickListener(MainActivity.this);
+        nextButton.setOnClickListener(MainActivity.this);
+        tryAgainButton.setOnClickListener(MainActivity.this);
+
+        scoreText = score + "/" + questionsTaken;
+        allAnswerScore.setText(scoreText);
     }
 
     @Override
@@ -96,11 +102,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (correctAnswer == choice){
             Toast.makeText(MainActivity.this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             score++;
-            scoreText = score + "/" + questionHolder.getQuestionListSize();
+            questionsTaken++;
+            scoreText = score + "/" + questionsTaken;
             allAnswerScore.setText(scoreText);
             nextQuestion();
         } else {
+            shakeAnimation();
             Toast.makeText(MainActivity.this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
+            questionsTaken++;
             nextQuestion();
         }
     }
@@ -109,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (currentQuestion < questionHolder.getQuestionListSize()){
             question = questionHolder.getNextQuestion();
             answerTextView.setText(question.getQuestionText());
+            scoreText = score + "/" + questionsTaken;
+            allAnswerScore.setText(scoreText);
         } else{
             Toast.makeText(MainActivity.this, "This was the last question", Toast.LENGTH_SHORT).show();
         }
@@ -117,10 +128,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // needs to redo it later to change values using setters in QuestionHolder class
     void restartQuiz(){
         score = 0;
-        scoreText = score + "/" + questionHolder.getQuestionListSize();
+        questionsTaken = 0;
+        scoreText = score + "/" + questionsTaken;
         allAnswerScore.setText(scoreText);
         questionHolder.setCurrentQuestion(0);
         question = questionHolder.getCurrentQuestion();
         answerTextView.setText(question.getQuestionText());
+    }
+
+    private void shakeAnimation(){
+        Animation shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake_animation);
+        CardView cardView = findViewById(R.id.card_view);
+        cardView.setAnimation(shake);
     }
 }

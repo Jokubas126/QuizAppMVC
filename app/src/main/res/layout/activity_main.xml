@@ -3,43 +3,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/backgroundColor"
     android:gravity="center"
     tools:context=".controller.Activities.MainActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="top">
+        android:gravity="top"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/finger_paint"
+            android:padding="8dp"
+            android:text="@string/title_text"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/score_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="0/0"
             android:textColor="@android:color/white"
-            android:textSize="25sp"/>
+            android:textSize="30sp" />
 
     </LinearLayout>
 
-    <ImageView
-        android:src="@drawable/ic_launcher_foreground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="131dp"
+        android:layout_margin="15dp"
+        android:elevation="10dp"
+        app:cardBackgroundColor="@color/backgroundCardLayoutColor">
 
-    <TextView
-        android:id="@+id/answer_text_view"
-        android:text=""
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/question_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -66,15 +95,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next_button"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/try_again_button"
-        android:contentDescription="@string/try_again_button"
+        style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/try_again_button"
-        android:visibility="visible"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/try_again_button"
+        app:srcCompat="@android:drawable/ic_menu_rotate" />
+
 
 </LinearLayout>
