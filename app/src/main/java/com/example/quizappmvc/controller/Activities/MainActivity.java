@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         saveGameState.saveGame(progressCounter);
-        super.onStop();
+        super.onPause();
     }
 
     private void fadeAnimation(){

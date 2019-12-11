@@ -11,7 +11,8 @@ public class ProgressCounter {
 
     public ProgressCounter(){}
 
-    public ProgressCounter(int currentQuestion, int score, int questionsTaken, String scoreText, int highScore, int highScoreQuestionsTaken) {
+    public ProgressCounter(int currentQuestion, int score, int questionsTaken, String scoreText,
+                           int highScore, int highScoreQuestionsTaken) {
         this.currentQuestion = currentQuestion;
         this.score = score;
         this.questionsTaken = questionsTaken;
